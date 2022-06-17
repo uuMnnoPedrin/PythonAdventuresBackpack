@@ -193,14 +193,15 @@ while True:
                 continue
         
         nomeItem = input("Digite o nome do item -> ").capitalize()
-        propItem = input("Digite a propriedade do item").lower()
-        with open(f"characters/{save}","r") as arquivo:
+        propItem = input("Digite a propriedade do item -> ").lower()
+        with open(f"characters/{save}","r", encoding="utf8") as arquivo:
             print(arquivo)
             txt = [data[0:-1] for data in arquivo.readlines()]
             txt[catID]+=f"//{nomeItem}//{propItem}"
             print(txt)
             txt= "\n".join(txt)
-            with open(f"characters/{save}","w") as file:
+            txt+="\n"
+            with open(f"characters/{save}","w", encoding="utf8") as file:
                 file.write(txt)
             
             
