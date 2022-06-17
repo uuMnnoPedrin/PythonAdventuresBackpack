@@ -2,7 +2,7 @@
 #pip install art==5.6
 #pip install tqdm
 
-from playsound import playsound as som
+#from playsound import playsound as som
 from art import text2art as textArte
 import datetime as dt
 from tqdm import tqdm
@@ -171,16 +171,55 @@ while True:
     if opc == "d":
         pass
     elif opc == "a":
-        ask = input("Escolha a categoria do item que você deseja adicionar\nw - Armas | a - Armadura | e - Equipamento | m - Dinheiro\n-> ")
+        while True:
+            ask = input("Escolha a categoria do item que você deseja adicionar\nw - Armas | a - Armadura | e - Equipamento | m - Dinheiro\n-> ").lower()
+            if ask == "w":
+                add = "armas"
+                catID = 1
+                break
+            elif ask == "a":
+                add = "armaduras"
+                catID = 2
+                break
+            elif ask == "e":
+                add = "equipamentos"
+                catID = 3
+                break
+            elif ask == "m":
+                add = "dinheiro"
+                catID = 4
+                break
+            else:
+                continue
+        
+        nomeItem = input("Digite o nome do item -> ").capitalize()
+        propItem = input("Digite a propriedade do item").lower()
+        with open(f"characters/{save}","r") as arquivo:
+            print(arquivo)
+            txt = [data[0:-1] for data in arquivo.readlines()]
+            txt[catID]+=f"//{nomeItem}//{propItem}"
+            print(txt)
+            txt= "\n".join(txt)
+            with open(f"characters/{save}","w") as file:
+                file.write(txt)
+            
+            
     elif opc == "e":
         pass
     elif opc == "v":
+        charBackpack = {}
+
+        with open(f"characters/{save}", "r", encoding="utf8") as file:
+            txt = [data[0:-1] for data in file.readlines()]
+            for e in txt:
+                pato = e.split("//")
+                charBackpack[pato[0]] = pato[1:]
         print("Abrindo a mochila do personagem...")
         sleep(1)
         assetArt("assets/art/backpack.txt")
         for i in tqdm(range(0,100), desc="Abrindo mochila", ascii=True):
             sleep(.001)
-        som("assets/audio/zipperaudio.mp3")
+        #som("assets/audio/zipperaudio.mp3")
         print("Mochila aberta!")
         sleep(1)
         os.system('clear')
@@ -188,6 +227,7 @@ while True:
         printPadrao()
         print(f"{'=-'*30}")
         
+
         print("Armas\n")
         for i,e in enumerate(charBackpack['armas']):
             if i == 0:
